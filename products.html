@@ -30,7 +30,7 @@
               <tbody>
                 <tr v-for="product in products" :key="product.id">
                   <td width="150">{{product.title}}</td>
-                  <td width="120">{{product.origin_price}}</td>
+                  <td width="120"><del>{{product.origin_price}}</del></td>
                   <td width="120">{{product.price}}</td>
                   <td width="150" :class="product.is_enabled ? 'text-success' : 'text-danger'">{{product.is_enabled ?'In Stock' :'Out Of Stock'}}</td>
                   <td width="120">
