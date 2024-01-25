@@ -70,284 +70,36 @@
                 </tr>
               </tbody>
             </table>
-            <p>
-              Total of <span>{{Object.keys(products).length}}</span> products
-            </p>
+            <div class="row align-items-center">
+              <div class="col">
+                <p>
+                  Total of
+                  <span>{{Object.keys(products).length}}</span> products
+                </p>
+              </div>
+              <div class="col">
+                <!-- pagination -->
+                <product-pagination
+                  :get-products="getProducts"
+                  :pagination="pagination"
+                ></product-pagination>
+              </div>
+            </div>
           </div>
           <!-- Modal -->
-          <div
-            class="modal fade"
-            id="productModal"
-            tabindex="-1"
-            aria-labelledby="productModalLabel"
-            aria-hidden="true"
+          <product-modal
+            :temp-product="tempProduct"
+            :update-product="updateProduct"
+            :del-picture="delPicture"
+            :add--picture="addPicture"
+            :new-picture-url="newPictureUrl"
           >
-            <div class="modal-dialog modal-xl">
-              <div class="modal-content">
-                <div class="modal-header bg-dark text-white">
-                  <h5 class="modal-title fs-5" id="productModalLabel">
-                    New Product
-                  </h5>
-                  <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-4 ">
-                      <div class="mb-3">
-                        <label for="imageInput" class="form-label h6 "
-                          >Main image for product</label
-                        >
-                        <img
-                          :src="tempProduct.imageUrl"
-                          :alt="tempProduct.title"
-                          class="img-fluid"
-                        />
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="imageInput"
-                          name="imageInput"
-                          placeholder="enter image url"
-                          v-model="tempProduct.imageUrl"
-                        />
-                      </div>
-                      <div class="bg-secondary" style="height: 1px;" ></div>
-                      <div class="mt-3 ">
-                        <h6>Place more Images </h6>
-                        <input type="text" class="form-control" id="imagesInput"
-                        name="imagesInput" v-model="newPictureUrl">
-                        <button
-                          type="button"
-                          class="mt-1 btn btn-outline-primary w-100"
-                          @click="addPicture"
-                        >
-                          Add more picture
-                        </button>
-                      </div>
-                      <div
-                        v-for="(pic,key) in tempProduct.imagesUrl"
-                        :key="key"
-                        class="mt-3"
-                      >
-                        <img
-                          :src="pic"
-                          :alt="tempProduct.title"
-                          class="img-fluid"
-                        />
-                        <button
-                          type="button"
-                          class="btn btn-outline-danger w-100"
-                          @click="delPicture(key)"
-                        >
-                          Delete picture
-                        </button>
-                      </div>
-                    </div>
-                    <div class="col-8">
-                      <div class="mb-3">
-                        <label for="productTitle" class="form-label"
-                          >Product Title</label
-                        >
-                        <input
-                          type="text"
-                          id="productTitle"
-                          name="productTitle"
-                          class="form-control"
-                          placeholder="enter product title"
-                          v-model="tempProduct.title"
-                        />
-                      </div>
-                      <div class="row">
-                        <div class="col-6 mb-3">
-                          <label for="productCategory" class="form-label"
-                            >Category</label
-                          >
-                          <input
-                            type="text"
-                            id="productCategory"
-                            name="productCategory"
-                            class="form-control"
-                            placeholder="enter category"
-                            v-model="tempProduct.category"
-                          />
-                        </div>
-                        <div class="col-6 mb-3">
-                          <label for="productUnit" class="form-label"
-                            >Unit</label
-                          >
-                          <input
-                            type="text"
-                            id="productUnit"
-                            name="productUnit"
-                            class="form-control"
-                            placeholder="enter unit"
-                            v-model="tempProduct.unit"
-                          />
-                        </div>
-                        <div class="col-6 mb-3">
-                          <label for="productReg" class="form-label"
-                            >Regular Price</label
-                          >
-                          <input
-                            type="text"
-                            id="productReg"
-                            name="productReg"
-                            class="form-control"
-                            type="number"
-                            min="0"
-                            placeholder="enter regular price"
-                            v-model="tempProduct.origin_price"
-                          />
-                        </div>
-                        <div class="col-6 mb-3">
-                          <label for="productPrice" class="form-label"
-                            >Sale Price</label
-                          >
-                          <input
-                            type="text"
-                            id="productPrice"
-                            name="productPrice"
-                            class="form-control"
-                            type="number"
-                            min="0"
-                            placeholder="enter price"
-                            v-model="tempProduct.price"
-                          />
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <label for="productDescription" class="form-label"
-                          >Product Description</label
-                        >
-                        <textarea
-                          type="text"
-                          id="productDescription"
-                          name="productDescription"
-                          class="form-control"
-                          v-model="tempProduct.description"
-                        ></textarea>
-                      </div>
-                      <div class="mb-3">
-                        <label for="productContent" class="form-label"
-                          >Product Content</label
-                        >
-                        <textarea
-                          type="text"
-                          id="productContent"
-                          name="productContent"
-                          class="form-control"
-                          v-model="tempProduct.content"
-                        ></textarea>
-                      </div>
-                      <div class="form-check mb-3">
-                        <input
-                          type="checkbox"
-                          class="form-check-input"
-                          id="is_enabled"
-                          name="is_enabled"
-                          v-model="tempProduct.is_enabled"
-                        />
-                        <label for="is_enabled" class="form-check-label"
-                          >In Stock</label
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    @click="updateProduct"
-                  >
-                    Save changes
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          </product-modal>
           <!--delModal-->
-          <div
-            class="modal fade"
-            id="delProductModal"
-            tabindex="-1"
-            aria-labelledby="delProductModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                  <h1 class="modal-title fs-5" id="delProductModalLabel">
-                    Delete Product
-                  </h1>
-                  <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  Delete product
-                  <strong class="text-danger">{{tempProduct.title}} </strong
-                  >(cannot be recovered after deletion).
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    @click="delProduct(tempProduct.id)"
-                  >
-                    Confirm Deletion
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!--Single Product -->
-          <!-- <div class="col-md-6">
-            <h2>Single Product Details</h2>
-            
-            <div class="card"  v-if="tempProduct.title">
-              <img :src="tempProduct.imageUrl" class="card-img-top object-fit" :alt="tempProduct.title">
-              <div class="card-body">
-                <h3 class="card-title">{{tempProduct.title}} <span class="badge rounded-pill text-bg-primary ms-2">{{tempProduct.category}}</span></h3>
-                <p class="card-text">OverView : {{tempProduct.description}}</p>
-                <p class="card-text">Description : {{tempProduct.content}}</p>
-                <div class="d-flex">
-                  <p class="me-2">{{tempProduct.price}}</p> <del class="text-secondary"><p>{{tempProduct.origin_price}}</p></del> <p class="ms-2">元 /{{tempProduct.unit}}</p>
-                </div>
-                <template class="d-flex">
-                  <div v-for="(item,key) in tempProduct.imagesUrl" :key="key" class="me-2">
-                    <img class="small-img" :src="item" >
-                  </div>
-                </template>
-                
-              </div>
-            </div>
-            <div v-else>
-              <p>Please select a product to view</p>
-            </div>
-          </div> -->
+          <del-product-modal
+            :temp-product="tempProduct"
+            :del-product="delProduct"
+          ></del-product-modal>
         </div>
       </div>
     </div>
@@ -365,12 +117,15 @@
     </style>
 
     <script type="module">
+      import productModalCom from "./productModal.js";
+      import delProductModalCom from "./delProductModal.js";
+      import paginationCom from "./pagination.js";
       const url = "https://vue3-course-api.hexschool.io";
       const path = "han113";
       let productModal = null;
       let delProductModal = null;
 
-      Vue.createApp({
+      const app = Vue.createApp({
         data() {
           return {
             user: {
@@ -382,7 +137,8 @@
             tempProduct: {
               imagesUrl: [],
             },
-            newPictureUrl:'',
+            pagination: {},
+            newPictureUrl: "",
           };
         },
         methods: {
@@ -400,12 +156,12 @@
                 window.location = "index.html";
               });
           },
-          getProducts() {
+          getProducts(page = 1) {
             axios
-              .get(`${url}/v2/api/${path}/admin/products/all`)
+              .get(`${url}/v2/api/${path}/admin/products?page=${page}`)
               .then((res) => {
                 this.products = res.data.products;
-                console.log(res.data);
+                this.pagination = res.data.pagination;
               })
               .catch((err) => {
                 alert(err.response.data.message);
@@ -489,15 +245,15 @@
               });
           },
           addPicture() {
-            if(this.newPictureUrl.trim() !== '') {
-              this.tempProduct.imagesUrl.push(this.newPictureUrl.trim())
-              this.newPictureUrl = '';
-              console.log('Success');
+            if (this.newPictureUrl.trim() !== "") {
+              this.tempProduct.imagesUrl.push(this.newPictureUrl.trim());
+              this.newPictureUrl = "";
+              console.log("Success");
             }
           },
-          delPicture(index){
-            this.tempProduct.imagesUrl.splice(index,1);
-          }
+          delPicture(index) {
+            this.tempProduct.imagesUrl.splice(index, 1);
+          },
         },
         mounted() {
           this.checkStatus();
@@ -517,7 +273,11 @@
             }
           );
         },
-      }).mount("#app");
+      });
+      app.component("productModal", productModalCom);
+      app.component("delProductModal", delProductModalCom);
+      app.component('ProductPagination',paginationCom);
+      app.mount("#app");
     </script>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
